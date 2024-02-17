@@ -16,10 +16,11 @@ MonoBehaviour:
   <Metadata>k__BackingField:
     Name: test
     Description: test
-    Url: test.test
-    Icons: []
+    Url: test
+    Icons:
+    - test
     Redirect:
       Native: 
       Universal: 
-    VerifyUrl: 
+    VerifyUrl: test
   <LoggingEnabled>k__BackingField: 0

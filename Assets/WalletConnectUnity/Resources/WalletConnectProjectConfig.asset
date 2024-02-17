@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Id>k__BackingField: 4adbd328e5508344f3208d6583f78f40
   <Metadata>k__BackingField:
-    Name: 
-    Description: 
-    Url: 
+    Name: test
+    Description: test
+    Url: test.test
     Icons: []
     Redirect:
       Native: 

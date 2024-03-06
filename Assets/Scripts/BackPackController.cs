@@ -1,3 +1,4 @@
+using Nethereum.ABI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ public class BackPackController : MonoBehaviour
     [SerializeField] private GameObject _powerbankEquip;
     private MainControlScript _mainControlScript;
     private List<ItemInfo> itemInfos = new List<ItemInfo>();
-    private List<BackPackItem> _packItems = new List<BackPackItem>();
+    [SerializeField] private List<BackPackItem> _packItems = new List<BackPackItem>();
     private void Start()
     {
         _mainControlScript = GetComponent<MainControlScript>();
@@ -25,16 +26,41 @@ public class BackPackController : MonoBehaviour
     {
         foreach (var item in _packItems)
         {
-            Destroy(item.gameObject);
+            item.gameObject.SetActive(false);
         }
-        _packItems.Clear();
-        List<BigInteger> items = _mainControlScript.GetInventoryItems().ToList();
-        itemInfos = _mainControlScript.GetItems();
+       
+        List<BigInteger> items = new List<BigInteger>();
+        items.AddRange(_mainControlScript.GetInventoryItems().ToList());
+        List<ItemInfo> itemInfostmp = _mainControlScript.GetItems();
+        itemInfos.Clear();
+
+        foreach (var item in itemInfostmp)
+        {
+            ItemInfo tmp = new ItemInfo(item.itemID, item.count);
+            itemInfos.Add(tmp);
+        }
         RemoveItems(itemInfos, items);
+        int counter = 0;
         for (int i = 0; i < itemInfos.Count; i++)
         {
-            _packItems.Add(Instantiate(_packItemPref, _packItemPref.transform.parent));
-            _packItems[i].ShowElement(itemInfos[i]);
+            string hexID = ConvertToHex(itemInfos[i].itemID);
+            if (hexID[0] == '0') hexID = hexID.Substring(1);
+            string type = hexID.Substring(0, 16);
+            if (type == EQUIPMENT_TYPE)
+            {
+                for (int j = 0; j < itemInfos[i].count; j++)
+                {
+                    
+                    _packItems[counter].ShowElement(itemInfos[i]);
+                    counter++;
+                }
+            }
+            else
+            {
+                
+                    _packItems[i].ShowElement(itemInfos[i]);
+                counter++;
+            }
         }
         LoadInventory();
     }    
@@ -42,13 +68,13 @@ public class BackPackController : MonoBehaviour
     {
         for (int i = itemList.Count - 1; i >= 0; i--)
         {
-            ItemInfo item = itemList[i];
-            if (idList.Contains(item.itemID))
+            
+            if (idList.Contains(itemList[i].itemID))
             {
-                if (item.count > 1)
+                if (itemList[i].count > 1)
                 {
                     // ≈сли значение больше 1, уменьшите его на 1
-                    item.count -= 1;
+                    itemList[i].count -= 1;
                 }
                 else
                 {
@@ -79,5 +105,9 @@ public class BackPackController : MonoBehaviour
         int level = Int32.Parse(lvl);
         return level;
     }
-
+    string ConvertToHex(BigInteger bigIntegerArray)
+    {
+        return bigIntegerArray.ToString("X");
+    }
+    private const string EQUIPMENT_TYPE = "4A78BC8049ECDA3D";
 }

@@ -196,6 +196,10 @@ public class MainControlScript : MonoBehaviour
     {
         return InventoryItems;
     }
+    public List<ItemInfo> GetInventoryItemsWithCount()
+    {
+        return _userItems;
+    }
     public async void LoadInventory()
     {
         Contract contract = ThirdwebManager.Instance.SDK.GetContract(AdressLifeHackatonPlayers, abiPlayer);
@@ -348,7 +352,14 @@ public class MainControlScript : MonoBehaviour
         await contract.Write("selfMint", count);
         CheckAllowence();
     }
-
+    public async void MergeItems(BigInteger id)
+    {
+        string adress = await ThirdwebManager.Instance.SDK.wallet.GetAddress();
+        Contract contract = ThirdwebManager.Instance.SDK.GetContract(AdressLifeHackatonItems, abiItems);
+        var result = await contract.Write("mergeEquipmentParts", id);
+        GetInventory();
+        onItemBuyed.Invoke();
+    }
     public async void BuyRegularLootBox()
     {
         string adress = await ThirdwebManager.Instance.SDK.wallet.GetAddress();

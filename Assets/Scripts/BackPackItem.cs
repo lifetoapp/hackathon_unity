@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
@@ -28,11 +29,13 @@ public class BackPackItem : MonoBehaviour
     private const string REGULAR_LOOTBOX_SUBTYPE = "6E477AD27FB26738";
     private const string PREMIUM_LOOTBOX_SUBTYPE = "EDCC438796E76959";
     private bool isLootBox=false;
+    private bool isPart=false;
     string type;
     string subtype;
     string lvl;
     public void ShowElement(ItemInfo itemInfo)
     {
+        gameObject.SetActive(true);
         _mainController = FindAnyObjectByType<MainControlScript>();
         _folder = FindFirstObjectByType<ImagesFolder>();
         _count = (Int32)itemInfo.count;
@@ -44,7 +47,7 @@ public class BackPackItem : MonoBehaviour
         lvl = hexID.Substring(48, 16);
         int level = Int32.Parse(lvl);
         SetInfo(type, subtype, level);
-        gameObject.SetActive(true);
+        
     }
     public void OnObjectClick()
     {
@@ -55,6 +58,13 @@ public class BackPackItem : MonoBehaviour
                 case REGULAR_LOOTBOX_SUBTYPE:
                     _mainController.ShowBoxOpenScreen();
                     break;
+            }
+        }
+        if (isPart)
+        {
+            if(_count >= 5)
+            {
+                _mainController.MergeItems(_id);
             }
         }
        
@@ -71,6 +81,7 @@ public class BackPackItem : MonoBehaviour
                 }
             case EQUIPMENT_PART_TYPE:
                 {
+                    isPart = true;
                     SetEquipPartInfo(subtype);
                     break;
                 }
@@ -112,6 +123,7 @@ public class BackPackItem : MonoBehaviour
                 }
         }
     }
+   
     private void SetEquipPartInfo(string subtupe)
     {
         _countTxt.transform.parent.gameObject.SetActive(true);

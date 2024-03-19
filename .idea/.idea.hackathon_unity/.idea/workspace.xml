@@ -23,6 +23,10 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/UIBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.walletconnect.modal@7186382cd6/Runtime/WalletConnectModal.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -80,7 +84,7 @@
       <option name="presentableId" value="Default" />
       <updated>1707762376673</updated>
       <workItem from="1707762402449" duration="750000" />
-      <workItem from="1708171545990" duration="1241000" />
+      <workItem from="1708171545990" duration="1606000" />
     </task>
     <servers />
   </component>
